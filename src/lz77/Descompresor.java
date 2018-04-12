@@ -5,6 +5,7 @@
  */
 package lz77;
 
+import static java.lang.Math.pow;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -18,7 +19,7 @@ public class Descompresor {
     private final int mdes;
     private final int l;
     private final int d;
-    private String stringComprimido;
+    private String stringDescomprimido;
     private String ceros;
     
     /**
@@ -27,121 +28,87 @@ public class Descompresor {
      * @param mdes
      */
     public Descompresor(int ment, int mdes){
-        this.ment = 6;
+        this.ment = ment;
         this.mdes = mdes;
         this.l = this.bits(ment);
         this.d = this.bits(mdes);
         this.ceros = this.getCeros();
-        this.stringComprimido = "";
+        this.stringDescomprimido = "";
     }
     
     /**
      * Comprime un string binario
-     * @param codificar string en binario a comprimir
+     * @param descodificar string en binario a comprimir
      * @return string comprimido
      */
-    public String comprimirString(String codificar){
+    public String descomprimirString(String descodificar){
         //String entrada = codificar.substring(0, ment);
         //codificar = codificar.substring(ment, ment+mdes);
         String deslizante;
-        String entrada;
+        String tupla;
+        int mida_tupla = l+d;
         Iterator iter;
-        Boolean patron;
         int index_mdes;
         int index_ment;
         String substring;
         String deslizanteAux;  
         boolean acabar = false;
-        System.out.println(codificar);
-        substring = codificar.substring(0, mdes-1);   
+        int distancia;
+        int longitud;
+        int index;
+        String patron;
+        System.out.println(descodificar);
+        
+        substring = descodificar.substring(0, mdes-1);   
         if (!substring.contains("1")){//Si no aparece ningun uno en los primeros mdes-1 bits del string, añadimos un 1
-            deslizante = codificar.substring(0, mdes-1)+"1";
-            entrada = codificar.substring(mdes-1,mdes+ment-1);
-            codificar = codificar.substring(mdes+ment-1);
+            deslizante = descodificar.substring(0, mdes-1)+descodificar.substring(mdes, mdes+1);
+            tupla = descodificar.substring(mdes+1,mdes+1+mida_tupla);
+            descodificar = descodificar.substring(mdes+1+mida_tupla);
         }else if(!substring.contains("0")){//Si no aparece ningun cero en los primeros mdes-1 bits del string, añadimos un 0
-            deslizante = codificar.substring(0, mdes-1)+"0";
-            entrada = codificar.substring(mdes-1,mdes+ment-1);
-            codificar = codificar.substring(mdes+ment-1);
-            System.out.println("hola");
+            deslizante = descodificar.substring(0, mdes-1)+descodificar.substring(mdes, mdes+1);
+            tupla = descodificar.substring(mdes+1,mdes+1+mida_tupla);
+            descodificar = descodificar.substring(mdes+1+mida_tupla);
         }else{
-           deslizante = codificar.substring(0, mdes);
-           entrada = codificar.substring(mdes,mdes+ment);
-           codificar = codificar.substring(mdes+ment);
+           deslizante = descodificar.substring(0, mdes);
+           tupla = descodificar.substring(mdes,mdes+mida_tupla);
+           descodificar = descodificar.substring(mdes+mida_tupla);
         }
         
-        this.comprime(deslizante);
+        this.descomprime(deslizante);
             
-        while(!acabar){
+        while(!acabar){         
+            distancia = this.getDistancia(tupla);
+            index = this.mdes-distancia;
+            longitud = this.getLongitud(tupla);
             
-            System.out.println("V. deslizante = "+deslizante);
-            System.out.println("V. entrada = "+entrada);    
+            System.out.println("Deslizante = "+deslizante);
+            System.out.println("Resto = "+descodificar);  
+            System.out.println("("+longitud+","+distancia+")");  
+            patron = deslizante.substring(index,index+longitud);
+            System.out.println("Patron = "+patron);
             
-            patron = false;
-            index_mdes = -1;
-            index_ment = -1;
-            for(int i=ment; i>0 && patron==false; i--){
-                if(deslizante.contains(entrada.substring(0, i))){
-                    patron=true;
-                    index_mdes = deslizante.lastIndexOf(entrada.substring(0, i));
-                    index_ment = i;
-                    System.out.println("Patron encontrado");
-                }
-            }
+            this.descomprime(patron);
+            System.out.println("Descomprimido = "+this.stringDescomprimido); 
             
-            this.comprime(index_mdes, index_ment);
-            if((entrada.length()+codificar.length())>ment+index_ment){
-                deslizante = deslizante.substring(index_ment)+entrada.substring(0,index_ment);
-                substring = deslizante.substring(0,mdes-1);
-                if (!substring.contains("1")){//Si no aparece ningun uno en los primeros mdes-1 bits de la ventana deslizante, añadimos un 1
-                    deslizante = codificar.substring(1, mdes)+"1"; //Y deslizamos un bit de más
-                }else if(!substring.contains("0")){//Si no aparece ningun cero en los primeros mdes-1 bits de la ventana deslizante, añadimos un 0
-                    deslizante = codificar.substring(1, mdes)+"0"; //Y deslizamos un bit de más
-                }
-                entrada = entrada.substring(index_ment)+codificar.substring(0,index_ment);
-                codificar = codificar.substring(index_ment);  
+            if((tupla.length()+descodificar.length())>mida_tupla*2){
+                deslizante = deslizante.substring(longitud)+patron;
+                tupla = descodificar.substring(0,mida_tupla);
+                descodificar = descodificar.substring(mida_tupla);  
+                
             }else{
-                entrada = entrada.substring(index_ment); 
-                acabar = true;
-            }
+                acabar = true;  
+            } 
         }
-        this.comprime(entrada+codificar);
-        return this.stringComprimido;
+        this.descomprime(descodificar);
+        return this.stringDescomprimido;
     }
     
     /**
-     * Descomprime un string
-     * @param string string comprimido
-     * @return string descomprimido
-     */
-    public String descomprimirString(String string){
-        
-        return null;
-    }
-    
-    /**
-     * Añade a la cadena comprimida un string. Útil para el inicio y el final de la compresión.
+     * Añade a la cadena descomprimida el string.
      * @param inicial
      */
-    public void comprime(String inicial){
-        this.stringComprimido += inicial;
-    }
-    
-    /**
-     * Transforma la distancia y longitud del patrón encontrado a binario y lo añade a la cadena comprimida.
-     * @param index_mdes distancia al patrón
-     * @param index_ment longitud del patrón
-     */
-    public void comprime(int index_mdes, int index_ment){
-        index_mdes = mdes-index_mdes;
-        System.out.println("("+index_ment+","+index_mdes+")");
-        String binary_index_mdes = this.ceros+Integer.toBinaryString(index_mdes);
-        int index = binary_index_mdes.length()-d;
-        binary_index_mdes = binary_index_mdes.substring(index);
-        String binary_index_ment = this.ceros+Integer.toBinaryString(index_ment);
-        index = binary_index_ment.length()-l;
-        binary_index_ment = binary_index_ment.substring(index);
-        System.out.println(binary_index_ment+" "+binary_index_mdes);
-        this.stringComprimido += binary_index_ment + binary_index_mdes;
+    public void descomprime(String string){
+        this.stringDescomprimido += string;
     }
     
     /**
@@ -172,5 +139,25 @@ public class Descompresor {
             ceros += "0";
         }
         return ceros;
+    }
+    
+    public void eliminaBitsSeguridad(){
+        
+    }
+    
+    public int getDistancia(String string){
+        double dist = Integer.parseInt(string.substring(l), 2);
+        if(dist==0){
+            dist = pow(2,d);
+        }
+        return (int)dist;
+    }
+    
+    public int getLongitud(String string){
+        double lon = Integer.parseInt(string.substring(0,l), 2);
+        if(lon==0){
+            lon = pow(2,l);
+        }
+        return (int)lon;
     }
 }

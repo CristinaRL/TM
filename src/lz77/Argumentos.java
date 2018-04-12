@@ -48,4 +48,12 @@ public class Argumentos {
     public void setCadenaComprimir(String cadenaComprimir) {
         this.cadenaComprimir = cadenaComprimir;
     }
+    
+     public String getCadenaDescomprimir() {
+        return cadenaDescomprimir;
+    }
+
+    public void setCadenaDescomprimir(String cadenaComprimir) {
+        this.cadenaDescomprimir = cadenaComprimir;
+    }
 }

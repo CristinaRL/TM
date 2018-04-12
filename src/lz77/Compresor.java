@@ -62,7 +62,6 @@ public class Compresor {
             deslizante = codificar.substring(0, mdes-1)+"0";
             entrada = codificar.substring(mdes-1,mdes+ment-1);
             codificar = codificar.substring(mdes+ment-1);
-            System.out.println("hola");
         }else{
            deslizante = codificar.substring(0, mdes);
            entrada = codificar.substring(mdes,mdes+ment);
@@ -73,9 +72,9 @@ public class Compresor {
             
         while(!acabar){
             
-            System.out.println("V. deslizante = "+deslizante);
-            System.out.println("V. entrada = "+entrada);    
-            
+            //System.out.println("V. deslizante = "+deslizante);
+            //System.out.println("V. entrada = "+entrada);    
+                        
             patron = false;
             index_mdes = -1;
             index_ment = -1;
@@ -84,7 +83,7 @@ public class Compresor {
                     patron=true;
                     index_mdes = deslizante.lastIndexOf(entrada.substring(0, i));
                     index_ment = i;
-                    System.out.println("Patron encontrado");
+                    //System.out.println("Patron encontrado");
                 }
             }
             
@@ -93,9 +92,9 @@ public class Compresor {
                 deslizante = deslizante.substring(index_ment)+entrada.substring(0,index_ment);
                 substring = deslizante.substring(0,mdes-1);
                 if (!substring.contains("1")){//Si no aparece ningun uno en los primeros mdes-1 bits de la ventana deslizante, añadimos un 1
-                    deslizante = codificar.substring(1, mdes)+"1"; //Y deslizamos un bit de más
+                    deslizante = deslizante.substring(1, mdes)+"1"; //Y deslizamos un bit de más
                 }else if(!substring.contains("0")){//Si no aparece ningun cero en los primeros mdes-1 bits de la ventana deslizante, añadimos un 0
-                    deslizante = codificar.substring(1, mdes)+"0"; //Y deslizamos un bit de más
+                    deslizante = deslizante.substring(1, mdes)+"0"; //Y deslizamos un bit de más
                 }
                 entrada = entrada.substring(index_ment)+codificar.substring(0,index_ment);
                 codificar = codificar.substring(index_ment);  
@@ -133,14 +132,14 @@ public class Compresor {
      */
     public void comprime(int index_mdes, int index_ment){
         index_mdes = mdes-index_mdes;
-        System.out.println("("+index_ment+","+index_mdes+")");
+        //System.out.println("("+index_ment+","+index_mdes+")");
         String binary_index_mdes = this.ceros+Integer.toBinaryString(index_mdes);
         int index = binary_index_mdes.length()-d;
         binary_index_mdes = binary_index_mdes.substring(index);
         String binary_index_ment = this.ceros+Integer.toBinaryString(index_ment);
         index = binary_index_ment.length()-l;
         binary_index_ment = binary_index_ment.substring(index);
-        System.out.println(binary_index_ment+" "+binary_index_mdes);
+        //System.out.println(binary_index_ment+" "+binary_index_mdes);
         this.stringComprimido += binary_index_ment + binary_index_mdes;
     }
     

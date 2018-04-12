@@ -25,7 +25,8 @@ public class LZ77 {
         Argumentos argumentos = new Argumentos();
         BigDecimal ratioCompresion;
 
-        String[] argv = {"-ment", "4", "-mdes", "8","-c", "1111111111110111001010011110101000100", "-d", "1011010101010001110010100001110100100101001110"};
+        String[] argv = {"-ment", "4", "-mdes", "8","-c", "11110111001010011110101000100", "-d", "1111011101100101011001011101010011001011000100100100100100"};
+        //String[] argv = {"-ment", "4", "-mdes", "8","-c", "1111111111110111001010011110101000100", "-d", "11111110001010011010100101011001011101010011001011000100100100100100"};
         JCommander cmd = new JCommander();
 
         try {
@@ -49,13 +50,22 @@ public class LZ77 {
             return;
         }
 
-        Compresor codec = new Compresor(argumentos.getMent(), argumentos.getMdes());
-        String cadenaComprimida= codec.comprimirString(argumentos.getCadenaComprimir());
+        Compresor compresor = new Compresor(argumentos.getMent(), argumentos.getMdes());
+        Descompresor descompresor = new Descompresor(argumentos.getMent(), argumentos.getMdes());
+        
+        
+        
         
         System.out.println("Ment: " + String.valueOf(argumentos.getMent()));
         System.out.println("Mdes: " + String.valueOf(argumentos.getMdes()));
+        
+        String cadenaComprimida= compresor.comprimirString(argumentos.getCadenaComprimir());
         System.out.println("Cadena a comprimir: " + argumentos.getCadenaComprimir());
         System.out.println("Cadena comprimida: " + cadenaComprimida);
+        
+        String cadenaDescomprimida= descompresor.descomprimirString(argumentos.getCadenaDescomprimir());
+        System.out.println("Cadena a descomprimir: " + argumentos.getCadenaDescomprimir());
+        System.out.println("Cadena descomprimida: " + cadenaDescomprimida);
 
     }
 
