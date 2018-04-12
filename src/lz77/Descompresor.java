@@ -47,11 +47,7 @@ public class Descompresor {
         String deslizante;
         String tupla;
         int mida_tupla = l+d;
-        Iterator iter;
-        int index_mdes;
-        int index_ment;
-        String substring;
-        String deslizanteAux;  
+        String substring; 
         boolean acabar = false;
         int distancia;
         int longitud;
@@ -59,20 +55,11 @@ public class Descompresor {
         String patron;
         System.out.println(descodificar);
         
-        substring = descodificar.substring(0, mdes-1);   
-        if (!substring.contains("1")){//Si no aparece ningun uno en los primeros mdes-1 bits del string, añadimos un 1
-            deslizante = descodificar.substring(0, mdes-1)+descodificar.substring(mdes, mdes+1);
-            tupla = descodificar.substring(mdes+1,mdes+1+mida_tupla);
-            descodificar = descodificar.substring(mdes+1+mida_tupla);
-        }else if(!substring.contains("0")){//Si no aparece ningun cero en los primeros mdes-1 bits del string, añadimos un 0
-            deslizante = descodificar.substring(0, mdes-1)+descodificar.substring(mdes, mdes+1);
-            tupla = descodificar.substring(mdes+1,mdes+1+mida_tupla);
-            descodificar = descodificar.substring(mdes+1+mida_tupla);
-        }else{
-           deslizante = descodificar.substring(0, mdes);
-           tupla = descodificar.substring(mdes,mdes+mida_tupla);
-           descodificar = descodificar.substring(mdes+mida_tupla);
-        }
+ 
+       
+        deslizante = descodificar.substring(0, mdes);
+        tupla = descodificar.substring(mdes,mdes+mida_tupla);
+        descodificar = descodificar.substring(mdes+mida_tupla);
         
         this.descomprime(deslizante);
             
@@ -82,13 +69,15 @@ public class Descompresor {
             longitud = this.getLongitud(tupla);
             
             System.out.println("Deslizante = "+deslizante);
+            System.out.println("Tupla = "+tupla);
             System.out.println("Resto = "+descodificar);  
             System.out.println("("+longitud+","+distancia+")");  
             patron = deslizante.substring(index,index+longitud);
-            System.out.println("Patron = "+patron);
+            System.out.println("Descomprimida = "+stringDescomprimido);
             
             this.descomprime(patron);
-            System.out.println("Descomprimido = "+this.stringDescomprimido); 
+            //System.out.println("Resto = "+descodificar);
+            //System.out.println("Descomprimido = "+this.stringDescomprimido); 
             
             if((tupla.length()+descodificar.length())>mida_tupla*2){
                 deslizante = deslizante.substring(longitud)+patron;
@@ -100,7 +89,10 @@ public class Descompresor {
             } 
         }
         this.descomprime(descodificar);
-        return this.stringDescomprimido;
+        System.out.println("Descomprimido = "+this.stringDescomprimido); 
+        
+        this.stringDescomprimido = this.quitarBits(stringDescomprimido); //Quitamos los bits añadidos al hacer la compresion
+        return this.stringDescomprimido;                                 // que permiten hacer referencia a 0s o 1s en caso de que haya demasiados iguales seguidos
     }
     
     /**
@@ -141,10 +133,6 @@ public class Descompresor {
         return ceros;
     }
     
-    public void eliminaBitsSeguridad(){
-        
-    }
-    
     public int getDistancia(String string){
         double dist = Integer.parseInt(string.substring(l), 2);
         if(dist==0){
@@ -159,5 +147,25 @@ public class Descompresor {
             lon = pow(2,l);
         }
         return (int)lon;
+    }
+    
+    public String quitarBits(String codificar){    
+        int mida = mdes-1;
+        String codificar_aux = "";
+        String ventana;
+        int i = 0;
+        for(i=0; i<(codificar.length()-mida); i++){
+            ventana = codificar.substring(i, mida+i);
+            if(!ventana.contains("0") || !ventana.contains("1")){ //Si hay mdes-1 bits de 0's, añadimos un 0 después
+                codificar_aux += ventana;
+                i+=mida;
+                System.out.println("holi");
+            }else{
+                codificar_aux+= ventana.substring(0,1);//En caso contrario dejamos el string tal y como está
+            }
+        }
+
+        //return codificar_aux+codificar.substring(i);
+        return codificar_aux+codificar.substring(i+1);
     }
 }
