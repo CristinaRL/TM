@@ -6,6 +6,7 @@
 Apartado 1: Comprobad que el programa comprime y descomprime correctamente una cadena de 25 bits aleatorios con Mdes = 8 y Ment = 4.
 Ment: 4
 Mdes: 8
+
 0110101010001111111010010 (Cadena a comprimir)
 0110101010010010011010001001100101101101000010011101110 (Cadena comprimida)
 0110101010010010011010001001100101101101000010011101110 (Cadena a descomprimir)
