@@ -9,51 +9,83 @@ import com.beust.jcommander.Parameter;
 
 /**
  *
- * @author alejandro
+ * @author levanna
  */
 public class Argumentos {
 
-    @Parameter(names = "-ment", description = "Ventana de entrada",required=true,validateValueWith = Potencia2.class)
+    @Parameter(names = {"-me","--ment"}, description = "Tamaño ventana de entrada",required=true,validateValueWith = Power2Validator.class)
     private Integer ment;
 
-    @Parameter(names = "-mdes", description = "Ventana deslizante" , required=true, validateValueWith = Potencia2.class)
+    @Parameter(names = {"-md","--mdes"}, description = "Tamaño ventana deslizante" , required=true, validateValueWith = Power2Validator.class)
     private Integer mdes;
 
-    @Parameter(names = "-c", description = "Cadena a comprimir", required=true, validateValueWith = ValidarBinario.class)
+    @Parameter(names = {"-c","--comprimir"}, description = "Cadena a comprimir", required=true, validateValueWith = BinaryValidator.class)
     private String cadenaComprimir;
     
-    @Parameter(names = "-d", description = "Cadena a comprimir", required=true, validateValueWith = ValidarBinario.class)
-    private String cadenaDescomprimir;
+    @Parameter(names = {"-d","--descomprimir"}, description = "Cadena a descomprimir", required=false)
+    private boolean descomprimir = false;
     
+    /**
+     *
+     * @return
+     */
     public Integer getMent() {
         return ment;
     }
 
+    /**
+     *
+     * @param ment
+     */
     public void setMent(Integer ment) {
         this.ment = ment;
     }
 
+    /**
+     *
+     * @return
+     */
     public Integer getMdes() {
         return mdes;
     }
 
+    /**
+     *
+     * @param mdes
+     */
     public void setMdes(Integer mdes) {
         this.mdes = mdes;
     }
 
-    public String getCadenaComprimir() {
+    /**
+     *
+     * @return
+     */
+    public String getCadenaSinComprimir() {
         return cadenaComprimir;
     }
 
+    /**
+     *
+     * @param cadenaComprimir
+     */
     public void setCadenaComprimir(String cadenaComprimir) {
         this.cadenaComprimir = cadenaComprimir;
     }
     
-     public String getCadenaDescomprimir() {
-        return cadenaDescomprimir;
+    /**
+     *
+     * @return
+     */
+    public boolean getDescomprimir() {
+        return descomprimir;
     }
 
-    public void setCadenaDescomprimir(String cadenaComprimir) {
-        this.cadenaDescomprimir = cadenaComprimir;
+    /**
+     *
+     * @param descomprimir
+     */
+    public void setCadenaDescomprimir(boolean descomprimir) {
+        this.descomprimir = descomprimir;
     }
 }

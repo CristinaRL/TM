@@ -5,11 +5,9 @@
  */
 package lz77;
 
-import java.util.Iterator;
-import java.util.Vector;
 
 /**
- *
+ *Permite comprimir una o varias cadenas binarias
  * @author levanna
  */
 public class Compresor {
@@ -19,10 +17,11 @@ public class Compresor {
     private final int l;
     private final int d;
     private String stringComprimido;
+    private String stringSinComprimir;
     private String ceros;
     
     /**
-     *
+     * Permite comprimir uno o varios strings binarios
      * @param ment
      * @param mdes
      */
@@ -32,6 +31,7 @@ public class Compresor {
         this.l = this.bits(ment);
         this.d = this.bits(mdes);
         this.ceros = this.getCeros();
+        this.stringSinComprimir = "";
         this.stringComprimido = "";
     }
     
@@ -43,38 +43,22 @@ public class Compresor {
     public String comprimirString(String codificar){
         //String entrada = codificar.substring(0, ment);
         //codificar = codificar.substring(ment, ment+mdes);
+        this.stringSinComprimir = codificar;
         String deslizante;
         String entrada;
-        Iterator iter;
         Boolean patron;
         int index_mdes;
         int index_ment;
-        String substring;
-        String deslizanteAux;  
         boolean acabar = false;
-        System.out.println(codificar);
-        substring = codificar.substring(0, mdes-1);   
-        if (!substring.contains("1")){//Si no aparece ningun uno en los primeros mdes-1 bits del string, añadimos un 1
-            deslizante = codificar.substring(0, mdes-1)+"1";
-            entrada = codificar.substring(mdes-1,mdes+ment-1);
-            codificar = codificar.substring(mdes+ment-1);
-        }else if(!substring.contains("0")){//Si no aparece ningun cero en los primeros mdes-1 bits del string, añadimos un 0
-            deslizante = codificar.substring(0, mdes-1)+"0";
-            entrada = codificar.substring(mdes-1,mdes+ment-1);
-            codificar = codificar.substring(mdes+ment-1);
-        }else{
-           deslizante = codificar.substring(0, mdes);
-           entrada = codificar.substring(mdes,mdes+ment);
-           codificar = codificar.substring(mdes+ment);
-        }
-        
+        String substring = codificar.substring(0, mdes-1);   
+
+        codificar = this.añadirBits(codificar);//Añadimos 0s y 1s en el string en caso de ser necesario
+        deslizante = codificar.substring(0, mdes);
+        entrada = codificar.substring(mdes,mdes+ment);
+        codificar = codificar.substring(mdes+ment);
         this.comprime(deslizante);
             
-        while(!acabar){
-            
-            //System.out.println("V. deslizante = "+deslizante);
-            //System.out.println("V. entrada = "+entrada);    
-                        
+        while(!acabar){                  
             patron = false;
             index_mdes = -1;
             index_ment = -1;
@@ -82,8 +66,7 @@ public class Compresor {
                 if(deslizante.contains(entrada.substring(0, i))){
                     patron=true;
                     index_mdes = deslizante.lastIndexOf(entrada.substring(0, i));
-                    index_ment = i;
-                    //System.out.println("Patron encontrado");
+                    index_ment = i;                    
                 }
             }
             
@@ -91,11 +74,6 @@ public class Compresor {
             if((entrada.length()+codificar.length())>=ment+index_ment){
                 deslizante = deslizante.substring(index_ment)+entrada.substring(0,index_ment);
                 substring = deslizante.substring(0,mdes-1);
-                if (!substring.contains("1")){//Si no aparece ningun uno en los primeros mdes-1 bits de la ventana deslizante, añadimos un 1
-                    deslizante = deslizante.substring(1, mdes)+"1"; //Y deslizamos un bit de más
-                }else if(!substring.contains("0")){//Si no aparece ningun cero en los primeros mdes-1 bits de la ventana deslizante, añadimos un 0
-                    deslizante = deslizante.substring(1, mdes)+"0"; //Y deslizamos un bit de más
-                }
                 entrada = entrada.substring(index_ment)+codificar.substring(0,index_ment);
                 codificar = codificar.substring(index_ment);  
             }else{
@@ -105,16 +83,6 @@ public class Compresor {
         }
         this.comprime(entrada+codificar);
         return this.stringComprimido;
-    }
-    
-    /**
-     * Descomprime un string
-     * @param string string comprimido
-     * @return string descomprimido
-     */
-    public String descomprimirString(String string){
-        
-        return null;
     }
     
     /**
@@ -172,4 +140,40 @@ public class Compresor {
         }
         return ceros;
     }
+    
+    /**
+     * Añade bits del tipo contrario en caso de que vengan mdes-1 bits iguales
+     * @param codificar string que queremos codificar
+     * @return string con bits de seguridad añadidos
+     */
+    public String añadirBits(String codificar){
+        int mida = mdes-1;
+        String codificar_aux = "";
+        String ventana;
+        int i = 0;
+        for(i=0; i<(codificar.length()-mida); i++){
+            ventana = codificar.substring(i, mida+i);
+            if(!ventana.contains("0")){ //Si hay mdes-1 bits de 0's, añadimos un 0 después
+                codificar_aux += ventana+"0";
+                i=i+mida-1;
+            }else if(!ventana.contains("1")){//Si hay mdes-1 bits de 1's, añadimos un 1 después
+                codificar_aux += ventana+"1";
+                i=i+mida-1;
+            }else{
+                codificar_aux+=codificar.substring(i, i+1);//En caso contrario dejamos el string tal y como está
+            }
+        }
+
+        return codificar_aux+codificar.substring(i);
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public float calcularFactorCompresion(){ 
+        float factorCompresion = (float)this.stringSinComprimir.length()/(float)this.stringComprimido.length();
+        return factorCompresion;
+    }
+    
 }

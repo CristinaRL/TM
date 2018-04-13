@@ -53,10 +53,7 @@ public class Descompresor {
         int longitud;
         int index;
         String patron;
-        System.out.println(descodificar);
-        
- 
-       
+
         deslizante = descodificar.substring(0, mdes);
         tupla = descodificar.substring(mdes,mdes+mida_tupla);
         descodificar = descodificar.substring(mdes+mida_tupla);
@@ -67,37 +64,32 @@ public class Descompresor {
             distancia = this.getDistancia(tupla);
             index = this.mdes-distancia;
             longitud = this.getLongitud(tupla);
-            
-            System.out.println("Deslizante = "+deslizante);
-            System.out.println("Tupla = "+tupla);
-            System.out.println("Resto = "+descodificar);  
-            System.out.println("("+longitud+","+distancia+")");  
             patron = deslizante.substring(index,index+longitud);
-            System.out.println("Descomprimida = "+stringDescomprimido);
+            
+            //System.out.println("Deslizante = "+deslizante);
+            //System.out.println("Tupla = "+tupla);
+            //System.out.println("Resto = "+descodificar);  
+            //System.out.println("("+longitud+","+distancia+")");  
+            //System.out.println("Descomprimida = "+stringDescomprimido);
             
             this.descomprime(patron);
-            //System.out.println("Resto = "+descodificar);
-            //System.out.println("Descomprimido = "+this.stringDescomprimido); 
             
             if((tupla.length()+descodificar.length())>mida_tupla*2){
                 deslizante = deslizante.substring(longitud)+patron;
                 tupla = descodificar.substring(0,mida_tupla);
-                descodificar = descodificar.substring(mida_tupla);  
-                
+                descodificar = descodificar.substring(mida_tupla);      
             }else{
                 acabar = true;  
             } 
         }
-        this.descomprime(descodificar);
-        System.out.println("Descomprimido = "+this.stringDescomprimido); 
-        
+        this.descomprime(descodificar);        
         this.stringDescomprimido = this.quitarBits(stringDescomprimido); //Quitamos los bits añadidos al hacer la compresion
         return this.stringDescomprimido;                                 // que permiten hacer referencia a 0s o 1s en caso de que haya demasiados iguales seguidos
     }
     
     /**
      * Añade a la cadena descomprimida el string.
-     * @param inicial
+     * @param string
      */
     public void descomprime(String string){
         this.stringDescomprimido += string;
@@ -133,6 +125,11 @@ public class Descompresor {
         return ceros;
     }
     
+    /**
+     *
+     * @param string
+     * @return
+     */
     public int getDistancia(String string){
         double dist = Integer.parseInt(string.substring(l), 2);
         if(dist==0){
@@ -141,6 +138,11 @@ public class Descompresor {
         return (int)dist;
     }
     
+    /**
+     *
+     * @param string
+     * @return
+     */
     public int getLongitud(String string){
         double lon = Integer.parseInt(string.substring(0,l), 2);
         if(lon==0){
@@ -149,6 +151,11 @@ public class Descompresor {
         return (int)lon;
     }
     
+    /**
+     *
+     * @param codificar
+     * @return
+     */
     public String quitarBits(String codificar){    
         int mida = mdes-1;
         String codificar_aux = "";
@@ -159,13 +166,12 @@ public class Descompresor {
             if(!ventana.contains("0") || !ventana.contains("1")){ //Si hay mdes-1 bits de 0's, añadimos un 0 después
                 codificar_aux += ventana;
                 i+=mida;
-                System.out.println("holi");
             }else{
                 codificar_aux+= ventana.substring(0,1);//En caso contrario dejamos el string tal y como está
             }
         }
 
         //return codificar_aux+codificar.substring(i);
-        return codificar_aux+codificar.substring(i+1);
+        return codificar_aux.substring(0,codificar_aux.length())+codificar.substring(i);
     }
 }
