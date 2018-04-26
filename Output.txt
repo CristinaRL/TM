@@ -1,0 +1,156 @@
+Apartado 1: Comprobad el correcto funcionamiento del programa; es decir, que es capaz de comprimir texto en LZ-77 y de recuperarlo tras la descompresión.
+Ment: 4
+Mdes: 8
+0100010101101110001000000111010101101110001000000110110001110101011001110110000101110010001000000110 (Cadena a comprimir (parcial))
+0100010110010110111110001001101101110000111010010100110100100101100011011101000100110110111000011110 (Cadena comprimida (parcial))
+0100010110010110111110001001101101110000111010010100110100100101100011011101000100110110111000011110 (Cadena a descomprimir (parcial))
+0100010101101110001000000111010101101110001000000110110001110101011001110110000101110010001000000110 (Cadena descomprimida (parcial))
+En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha mucho tiempo que vivýa un hidalg (Cadena descomprimida convertida (parcial))
+La cadena sin comprimir y la cadena descomprimida son iguales.
+Factor de compresión: 0.5491302
+Tiempo empleado en la compresión y descompresión: 0.239199254 segundos
+
+Ment: 4
+Mdes: 8
+0100001001000101010100100100111001000001010100100100010001001111001000000101011101101000011011110010 (Cadena a comprimir (parcial))
+0100001000000111001001000100110110011001011010010010110011100101111010010100101101100110001000010001 (Cadena comprimida (parcial))
+0100001000000111001001000100110110011001011010010010110011100101111010010100101101100110001000010001 (Cadena a descomprimir (parcial))
+0100001001000101010100100100111001000001010100100100010001001111001000000101011101101000011011110010 (Cadena descomprimida (parcial))
+BERNARDO Who's there? FRANCISCO Nay, answer me: stand, and unfold yourself. BERNARDO Long live the k (Cadena descomprimida convertida (parcial))
+La cadena sin comprimir y la cadena descomprimida son iguales.
+Factor de compresión: 0.55218315
+Tiempo empleado en la compresión y descompresión: 0.213846581 segundos
+
+
+Apartado 2: Comprimid el archivo “hamlet_short.txt” con distintos valores de Mdes y Ment entre 4 y 4096 y analizad el factor de compresión y el tiempo invertido para conseguirlo.
+Factor de compresión: 0.55218315 (8, 4) 0.08088852s
+Factor de compresión: 0.5600486 (16, 4) 0.06926906s
+Factor de compresión: 0.54496485 (32, 4) 0.071447061s
+Factor de compresión: 0.49876752 (64, 4) 0.076546846s
+Factor de compresión: 0.44821438 (128, 4) 0.069381245s
+Factor de compresión: 0.40752566 (256, 4) 0.070353754s
+Factor de compresión: 0.37850168 (512, 4) 0.064876682s
+Factor de compresión: 0.36322242 (1024, 4) 0.061433459s
+Factor de compresión: 0.37111926 (2048, 4) 0.061961341s
+Factor de compresión: 0.44137052 (4096, 4) 0.041641443s
+Factor de compresión: 0.4938977 (8, 8) 0.072314692s
+Factor de compresión: 0.5600108 (16, 8) 0.067959145s
+Factor de compresión: 0.6449506 (32, 8) 0.069561004s
+Factor de compresión: 0.7096664 (64, 8) 0.069579365s
+Factor de compresión: 0.7083938 (128, 8) 0.059766876s
+Factor de compresión: 0.6936455 (256, 8) 0.064838837s
+Factor de compresión: 0.67065483 (512, 8) 0.069324264s
+Factor de compresión: 0.642752 (1024, 8) 0.059385906s
+Factor de compresión: 0.6389402 (2048, 8) 0.051734306s
+Factor de compresión: 0.6928923 (4096, 8) 0.028985222s
+Factor de compresión: 0.49202302 (16, 16) 0.0648409s
+Factor de compresión: 0.598557 (32, 16) 0.072512352s
+Factor de compresión: 0.69632363 (64, 16) 0.068639624s
+Factor de compresión: 0.7409789 (128, 16) 0.071414982s
+Factor de compresión: 0.791603 (256, 16) 0.070441645s
+Factor de compresión: 0.8587103 (512, 16) 0.053434549s
+Factor de compresión: 0.92983633 (1024, 16) 0.050858583s
+Factor de compresión: 0.96085244 (2048, 16) 0.048045157s
+Factor de compresión: 0.96723795 (4096, 16) 0.030774894s
+Factor de compresión: 0.540069 (32, 32) 0.059841705s
+Factor de compresión: 0.6391864 (64, 32) 0.069508981s
+Factor de compresión: 0.686414 (128, 32) 0.060686276s
+Factor de compresión: 0.74651307 (256, 32) 0.05963124s
+Factor de compresión: 0.8490431 (512, 32) 0.060687981s
+Factor de compresión: 0.9992773 (1024, 32) 0.058535938s
+Factor de compresión: 1.0937376 (2048, 32) 0.058766173s
+Factor de compresión: 1.1331785 (4096, 32) 0.039086327s
+Factor de compresión: 0.5872859 (64, 64) 0.067528616s
+Factor de compresión: 0.6354167 (128, 64) 0.072789444s
+Factor de compresión: 0.69843405 (256, 64) 0.073779393s
+Factor de compresión: 0.808577 (512, 64) 0.069293677s
+Factor de compresión: 0.9864447 (1024, 64) 0.073070753s
+Factor de compresión: 1.1018728 (2048, 64) 0.072786728s
+Factor de compresión: 1.1917828 (4096, 64) 0.054479346s
+Factor de compresión: 0.5931222 (128, 128) 0.07197077s
+Factor de compresión: 0.6565369 (256, 128) 0.083268259s
+Factor de compresión: 0.76864636 (512, 128) 0.095628318s
+Factor de compresión: 0.96007407 (1024, 128) 0.099239095s
+Factor de compresión: 1.0901445 (2048, 128) 0.122549903s
+Factor de compresión: 1.2019705 (4096, 128) 0.10677521s
+Factor de compresión: 0.62114406 (256, 256) 0.094656128s
+Factor de compresión: 0.7295111 (512, 256) 0.122793064s
+Factor de compresión: 0.91104764 (1024, 256) 0.151483113s
+Factor de compresión: 1.0443102 (2048, 256) 0.19078259s
+Factor de compresión: 1.1702638 (4096, 256) 0.16130382s
+Factor de compresión: 0.6980227 (512, 512) 0.154750385s
+Factor de compresión: 0.88274103 (1024, 512) 0.228843313s
+Factor de compresión: 1.0171653 (2048, 512) 0.321358376s
+Factor de compresión: 1.1512629 (4096, 512) 0.278555927s
+Factor de compresión: 0.8551696 (1024, 1024) 0.305906368s
+Factor de compresión: 0.9722255 (2048, 1024) 0.492811534s
+Factor de compresión: 1.0935935 (4096, 1024) 0.480945656s
+Factor de compresión: 0.9409096 (2048, 2048) 0.639685554s
+Factor de compresión: 1.025844 (4096, 2048) 0.642076859s
+Factor de compresión: 1.0004824 (4096, 4096) 0.085263437s
+
+Apartado 3: Comprimid ahora el archivo “quijote_short.txt” y analizad para qué combinación de Mdes y Ment se obtiene el mejor factor de compresión. 
+Factor de compresión: 0.5491302 (8, 4) 0.069795471s
+Factor de compresión: 0.5616542 (16, 4) 0.066762631s
+Factor de compresión: 0.5509805 (32, 4) 0.063216076s
+Factor de compresión: 0.49941972 (64, 4) 0.064281815s
+Factor de compresión: 0.4482702 (128, 4) 0.063114317s
+Factor de compresión: 0.40763822 (256, 4) 0.070002098s
+Factor de compresión: 0.37872893 (512, 4) 0.073322986s
+Factor de compresión: 0.36370108 (1024, 4) 0.061938072s
+Factor de compresión: 0.3722455 (2048, 4) 0.055626827s
+Factor de compresión: 0.44492817 (4096, 4) 0.040402717s
+Factor de compresión: 0.49078575 (8, 8) 0.068039121s
+Factor de compresión: 0.5692404 (16, 8) 0.064700897s
+Factor de compresión: 0.65366167 (32, 8) 0.060080483s
+Factor de compresión: 0.7100304 (64, 8) 0.061886727s
+Factor de compresión: 0.7144979 (128, 8) 0.053919997s
+Factor de compresión: 0.70005995 (256, 8) 0.053846456s
+Factor de compresión: 0.6706037 (512, 8) 0.052693082s
+Factor de compresión: 0.64383024 (1024, 8) 0.050780905s
+Factor de compresión: 0.6391495 (2048, 8) 0.047375837s
+Factor de compresión: 0.695889 (4096, 8) 0.031395205s
+Factor de compresión: 0.50372744 (16, 16) 0.066389628s
+Factor de compresión: 0.6170566 (32, 16) 0.06286074s
+Factor de compresión: 0.71757066 (64, 16) 0.056538669s
+Factor de compresión: 0.7950214 (128, 16) 0.056082673s
+Factor de compresión: 0.86637706 (256, 16) 0.052473307s
+Factor de compresión: 0.92719436 (512, 16) 0.053981347s
+Factor de compresión: 0.9668874 (1024, 16) 0.049365171s
+Factor de compresión: 0.9808061 (2048, 16) 0.04672676s
+Factor de compresión: 0.97752273 (4096, 16) 0.027576427s
+Factor de compresión: 0.556607 (32, 32) 0.056899867s
+Factor de compresión: 0.66336715 (64, 32) 0.061191953s
+Factor de compresión: 0.7470078 (128, 32) 0.06003175s
+Factor de compresión: 0.84201854 (256, 32) 0.060665649s
+Factor de compresión: 0.9617692 (512, 32) 0.057811614s
+Factor de compresión: 1.0780591 (1024, 32) 0.058119562s
+Factor de compresión: 1.129906 (2048, 32) 0.05347758s
+Factor de compresión: 1.110417 (4096, 32) 0.03580173s
+Factor de compresión: 0.6102859 (64, 64) 0.059571692s
+Factor de compresión: 0.6923533 (128, 64) 0.065187456s
+Factor de compresión: 0.7918644 (256, 64) 0.061904413s
+Factor de compresión: 0.9174147 (512, 64) 0.066293146s
+Factor de compresión: 1.0455242 (1024, 64) 0.068075488s
+Factor de compresión: 1.1119272 (2048, 64) 0.074798154s
+Factor de compresión: 1.1047156 (4096, 64) 0.061554213s
+Factor de compresión: 0.6453548 (128, 128) 0.066970829s
+Factor de compresión: 0.7423279 (256, 128) 0.070200666s
+Factor de compresión: 0.8665607 (512, 128) 0.086627218s
+Factor de compresión: 0.9927149 (1024, 128) 0.1017482s
+Factor de compresión: 1.0672235 (2048, 128) 0.113245365s
+Factor de compresión: 1.0789126 (4096, 128) 0.105592834s
+Factor de compresión: 0.7001798 (256, 256) 0.08331254s
+Factor de compresión: 0.8165385 (512, 256) 0.117310616s
+Factor de compresión: 0.94247836 (1024, 256) 0.144125601s
+Factor de compresión: 1.0218723 (2048, 256) 0.183503107s
+Factor de compresión: 1.0496855 (4096, 256) 0.203123661s
+Factor de compresión: 0.78404295 (512, 512) 0.142370306s
+Factor de compresión: 0.9074362 (1024, 512) 0.209792194s
+Factor de compresión: 0.9850602 (2048, 512) 0.316601843s
+Factor de compresión: 1.0286864 (4096, 512) 0.355793378s
+Factor de compresión: 0.87678283 (1024, 1024) 0.308845602s
+Factor de compresión: 0.954137 (2048, 1024) 0.502018123s
+Factor de compresión: 1.0055344 (4096, 1024) 0.551372765s
+Factor de compresión: 0.941827 (2048, 2048) 0.630787308s
+Factor de compresión: 0.99416345 (4096, 2048) 0.673845136s
