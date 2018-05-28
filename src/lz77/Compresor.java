@@ -18,7 +18,6 @@ public class Compresor {
     private final int d;
     private String stringComprimido;
     private String stringSinComprimir;
-    private String ceros;
     
     /**
      * Permite comprimir uno o varios strings binarios
@@ -30,7 +29,6 @@ public class Compresor {
         this.mdes = mdes;
         this.l = this.bits(ment);
         this.d = this.bits(mdes);
-        this.ceros = this.getCeros();
         this.stringSinComprimir = "";
         this.stringComprimido = "";
     }
@@ -72,10 +70,11 @@ public class Compresor {
             
             this.comprime(index_mdes, index_ment);
             if((entrada.length()+codificar.length())>=ment+index_ment){
+                //System.out.println(codificar.length()+" "+index_ment);
                 deslizante = deslizante.substring(index_ment)+entrada.substring(0,index_ment);
                 substring = deslizante.substring(0,mdes-1);
                 entrada = entrada.substring(index_ment)+codificar.substring(0,index_ment);
-                codificar = codificar.substring(index_ment);  
+                codificar = codificar.substring(index_ment);
             }else{
                 entrada = entrada.substring(index_ment); 
                 acabar = true;
@@ -101,12 +100,12 @@ public class Compresor {
     public void comprime(int index_mdes, int index_ment){
         index_mdes = mdes-index_mdes;
         //System.out.println("("+index_ment+","+index_mdes+")");
-        String binary_index_mdes = this.ceros+Integer.toBinaryString(index_mdes);
-        int index = binary_index_mdes.length()-d;
-        binary_index_mdes = binary_index_mdes.substring(index);
-        String binary_index_ment = this.ceros+Integer.toBinaryString(index_ment);
-        index = binary_index_ment.length()-l;
-        binary_index_ment = binary_index_ment.substring(index);
+
+        String binary_index_mdes = String.format("%"+d+"s", Integer.toBinaryString(index_mdes)).replace(' ', '0');
+        binary_index_mdes = binary_index_mdes.substring(binary_index_mdes.length()-d);
+        String binary_index_ment = String.format("%"+l+"s", Integer.toBinaryString(index_ment)).replace(' ', '0');
+        binary_index_ment = binary_index_ment.substring(binary_index_ment.length()-l);
+        
         //System.out.println(binary_index_ment+" "+binary_index_mdes);
         this.stringComprimido += binary_index_ment + binary_index_mdes;
     }
@@ -130,18 +129,6 @@ public class Compresor {
     }
     
     /**
-     * Crea un string de ceros util para la conversion de decimal a binario de longitud fija
-     * @return un string de longitud d
-     */
-    public String getCeros(){
-        String ceros = "";
-        for(int i=0; i<d; i++){
-            ceros += "0";
-        }
-        return ceros;
-    }
-    
-    /**
      * Añade bits del tipo contrario en caso de que vengan mdes-1 bits iguales
      * @param codificar string que queremos codificar
      * @return string con bits de seguridad añadidos
@@ -155,10 +142,8 @@ public class Compresor {
             ventana = codificar.substring(i, mida+i);
             if(!ventana.contains("0")){ //Si hay mdes-1 bits de 0's, añadimos un 0 después
                 codificar_aux += ventana+"0";
-                i=i+mida-1;
             }else if(!ventana.contains("1")){//Si hay mdes-1 bits de 1's, añadimos un 1 después
                 codificar_aux += ventana+"1";
-                i=i+mida-1;
             }else{
                 codificar_aux+=codificar.substring(i, i+1);//En caso contrario dejamos el string tal y como está
             }

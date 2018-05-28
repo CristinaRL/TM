@@ -165,7 +165,6 @@ public class Descompresor {
             ventana = codificar.substring(i, mida+i);
             if(!ventana.contains("0") || !ventana.contains("1")){ //Si hay mdes-1 bits de 0's, añadimos un 0 después
                 codificar_aux += ventana;
-                i+=mida;
             }else{
                 codificar_aux+= ventana.substring(0,1);//En caso contrario dejamos el string tal y como está
             }

@@ -31,8 +31,8 @@ public class PruebasAudio{
 //Apartado 1: Comprobad el correcto funcionamiento del programa; es decir, que es capaz de comprimir texto en LZ-77 y de recuperarlo tras la descompresión.
         System.out.println("Apartado 1: Comprobad el correcto funcionamiento del programa; es decir, que es capaz de comprimir texto en LZ-77 y de recuperarlo tras la descompresión.");
         
-        String[] argv = {"--ment", "4", "--mdes", "8","-c","data.wav", "-d", ""};
-        this.comprimirDescomprimir(argv);
+        String[] argv = {"--ment", "4", "--mdes", "8", "-c", "data.wav"};
+        this.validarParametros(argv);
         
     }    
     
@@ -54,17 +54,66 @@ public class PruebasAudio{
             
              // Validación: Mdes+Ment<= longitud datos a comprimir
             int sum = argumentos.getMent() + argumentos.getMdes();
-            this.cargarAudio(argumentos.getRutaComprimir());
-            boolean res = sum <= (this.txt).length();
-            if (!res) {
-                System.err.println("Error: Mdes+Ment>longitud datos a comprimir");
-                return;
+            
+            if(argumentos.getRutaComprimir() != null){
+                this.cargarAudio(argumentos.getRutaComprimir());
+                
+                boolean res = sum <= (this.txt).length();
+                if (!res) {
+                    System.err.println("Error: Mdes+Ment>longitud datos a comprimir");
+                    return;
+                }else{
+                    this.comprimir();
+                }
+               
             }
-            if(argumentos.getDescomprimir().equals("")){
+            if(argumentos.getDescomprimir() != null){
                 System.out.println("HOOOLAAAAA");
             }
     }
     
+    /**
+     *
+     * @param argv
+     */
+    public void comprimir(){
+        
+        Compresor compresor = new Compresor(argumentos.getMent(), argumentos.getMdes());
+        
+        long t0 = System.nanoTime();
+        System.out.println(txt);
+        this.txt = compresor.añadirBits(this.txt);
+        this.escribirFichero("cadena.txt", txt);
+        String cadenaComprimida = compresor.comprimirString(txt);
+        
+        long t1 = System.nanoTime();
+        double time = (double)(t1-t0)/1000000000.0;
+        
+        String rutaComprimir = argumentos.getRutaComprimir();
+        int index = rutaComprimir.lastIndexOf('.');
+        String rutaSinExtension = rutaComprimir.substring(0, index);
+        
+        this.escribirFichero(rutaSinExtension+"_comprimido.txt", cadenaComprimida);
+        
+        System.out.println("Factor de compresión: " + compresor.calcularFactorCompresion() + " ("+mdes+", "+ment+") "+time+"s");
+    }
+    
+    /**
+     *
+     * @param ruta
+     */
+    public void cargarAudio(String ruta){
+        int[] lista = WavReader.Wav2Array(ruta);
+        this.txt = "";
+        String string = "";
+        for(int numero: lista){ //-1104
+            string = String.format("%16s", Integer.toBinaryString(numero)).replace(' ', '0');
+            string = string.substring(string.length()-16);
+            //System.out.println(numero+" "+string);
+            this.txt += string;
+        }
+    }
+
     private void escribirFichero(String ruta, String string){
         FileWriter fichero = null;
         PrintWriter pw = null;
@@ -85,73 +134,6 @@ public class PruebasAudio{
            } catch (Exception e2) {
               e2.printStackTrace();
            }
-        }
-    }
-    
-    /**
-     *
-     * @param argv
-     */
-    public void comprimirDescomprimirExtenso(String[] argv){
-        
-        String rutaComprimir;
-        String cadenaComprimida;
-        String cadenaDescomprimida = "";
-        this.validarParametros(argv);
-        CompresorTxt compresor = new CompresorTxt(argumentos.getMent(), argumentos.getMdes());
-        
-        rutaComprimir = argumentos.getRutaComprimir();
-        int index = rutaComprimir.lastIndexOf('.');
-        String rutaSinExtension = rutaComprimir.substring(0, index);
-        long t0 = System.nanoTime();
-        cadenaComprimida = compresor.comprimirString(txt);
-        this.escribirFichero(rutaSinExtension+"_comprimido.txt", cadenaComprimida);
-        DescompresorTxt descompresor = new DescompresorTxt(argumentos.getMent(), argumentos.getMdes());
-        cadenaDescomprimida = descompresor.descomprimirString(cadenaComprimida);
-        this.escribirFichero(rutaSinExtension+"_descomprimido.txt", cadenaDescomprimida);
-        long t1 = System.nanoTime();
-
-        System.out.println("Ment: " + String.valueOf(argumentos.getMent()));
-        System.out.println("Mdes: " + String.valueOf(argumentos.getMdes()));
-        System.out.println(compresor.getCadenaSinComprimir().substring(0,100)+" (Cadena a comprimir (parcial))");
-        System.out.println(cadenaComprimida.substring(0, 100)+" (Cadena comprimida (parcial))");
-        System.out.println(cadenaComprimida.substring(0,100)+" (Cadena a descomprimir (parcial))");
-        System.out.println(cadenaDescomprimida.substring(0,100)+" (Cadena descomprimida (parcial))");
-        System.out.println(descompresor.getStringDescomprimido().substring(0,100)+" (Cadena descomprimida convertida (parcial))");
-        if(compresor.getCadenaSinComprimir().equals(cadenaDescomprimida)){
-            System.out.println("La cadena sin comprimir y la cadena descomprimida son iguales.");
-        }
-        System.out.println("Factor de compresión: " + compresor.calcularFactorCompresion()+"");
-        long time = t1-t0;
-        System.out.println("Tiempo empleado en la compresión y descompresión: "+time / 1000000000.0+" segundos\n");
-    }
-    
-    /**
-     *
-     * @param argv
-     */
-    public void comprimirDescomprimir(String[] argv){
-        
-        this.validarParametros(argv);
-        CompresorAudio compresor = new CompresorAudio(argumentos.getMent(), argumentos.getMdes());
-       
-        long t0 = System.nanoTime();
-        String cadenaComprimida = compresor.comprimirString(txt);
-        long t1 = System.nanoTime();
-        double time = (double)(t1-t0)/1000000000.0;
-        System.out.println("Factor de compresión: " + compresor.calcularFactorCompresion() + " ("+mdes+", "+ment+") "+time+"s");
-    }
-    
-    /**
-     *
-     * @param ruta
-     */
-    public void cargarAudio(String ruta){
-        int[] lista = WavReader.Wav2Array(ruta);
-        this.txt = "";
-        for(int numero: lista){ //-1104
-                System.out.println(numero);
-            
         }
     }
 
